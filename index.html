@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LevelUp — прокачай свой день</title>
+<style>
+:root{--bg:#0b1020;--panel:rgba(17,25,46,.88);--panel2:rgba(24,34,59,.8);--text:#f4f6ff;--muted:#98a5c2;--line:rgba(158,177,225,.15);--accent:#7065ff;--accent2:#42c8ff;--good:#42d6a4;--danger:#ff6d8c}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 70% 0%,#29325a 0,transparent 42%),radial-gradient(ellipse at 0% 100%,#162d43 0,transparent 42%),var(--bg);padding:28px}
+button,input,select{font:inherit}button{cursor:pointer;border:0;color:inherit}.app{max-width:1180px;margin:auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px}.sidebar,.panel,.task-card,.composer{background:var(--panel);border:1px solid var(--line);border-radius:20px;backdrop-filter:blur(16px);box-shadow:0 18px 55px #0002}.sidebar{padding:22px;display:flex;flex-direction:column;min-height:calc(100vh - 56px)}.brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#4d9bff);font-size:22px;font-weight:800}.brand h2{margin:0;font-size:19px}.brand small{color:var(--muted)}.nav{display:grid;gap:8px}.nav button{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:12px;background:transparent;color:#bdc8e2;text-align:left}.nav button.active,.nav button:hover{background:#655cff26;color:#fff}.nav .count{color:var(--muted);font-size:12px}.sidebar-bottom{margin-top:auto;padding-top:22px;color:var(--muted);font-size:13px}.main{min-width:0}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin:7px 0 25px}.top h1{font-size:clamp(27px,4vw,38px);margin:0 0 8px;letter-spacing:-1px}.top p{margin:0;color:var(--muted)}.level-pill{border:1px solid var(--line);background:#ffffff08;padding:10px 14px;border-radius:14px;white-space:nowrap;font-size:13px}.xp-wrap{margin-top:15px;max-width:340px}.xp-label{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:7px}.bar{height:8px;background:#ffffff13;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .25s}.composer{padding:12px;display:flex;gap:10px;margin-bottom:16px}.composer input{min-width:0;flex:1;background:transparent;border:0;outline:0;color:var(--text);padding:10px}.composer input::placeholder{color:#7f8ba8}.primary{padding:11px 17px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4b83ff);font-weight:650;box-shadow:0 7px 22px #7065ff35}.primary:hover{filter:brightness(1.1)}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.filter{padding:8px 12px;border-radius:10px;background:#ffffff08;border:1px solid var(--line);color:var(--muted);font-size:13px}.filter.active{background:#7065ff28;color:white;border-color:#7065ff70}.task-list{display:grid;gap:10px}.task-card{padding:15px;display:flex;align-items:center;gap:13px}.check{flex:none;width:23px;height:23px;border:2px solid #8290b1;border-radius:8px;background:transparent;display:grid;place-items:center}.task-card.done .check{background:var(--good);border-color:var(--good);color:#061b19}.task-body{flex:1;min-width:0}.task-title{font-weight:600;overflow-wrap:anywhere}.task-meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px;margin-top:5px}.task-card.done .task-title{text-decoration:line-through;color:#77839f}.tag{padding:4px 7px;border-radius:7px;background:#ffffff0d}.star{background:transparent;color:#8794b4;font-size:20px;padding:4px}.star.important{color:#ffd166}.delete{background:transparent;color:#7582a2;font-size:19px;padding:4px}.delete:hover{color:var(--danger)}.empty{text-align:center;padding:40px 15px;color:var(--muted);border:1px dashed var(--line);border-radius:18px}.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:17px}.mini{padding:17px}.mini h3{font-size:14px;margin:0 0 8px}.mini strong{font-size:27px}.mini p{margin:5px 0 0;color:var(--muted);font-size:12px}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;background:#202b48;border:1px solid var(--line);padding:12px 17px;border-radius:12px;transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:720px){body{padding:14px}.app{grid-template-columns:1fr}.sidebar{min-height:auto;padding:14px}.brand{margin-bottom:12px}.nav{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar-bottom{display:none}.top{flex-direction:column}.level-pill{white-space:normal}.composer{flex-wrap:wrap}.composer input{flex-basis:100%;padding:9px}.composer .primary{flex:1}.bottom-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">↗</div><div><h2>LevelUp</h2><small>Прокачай свой день</small></div></div>
+    <nav class="nav" id="nav">
+      <button class="active" data-filter="all">🎯 Все задания <span class="count" id="allCount">0</span></button>
+      <button data-filter="active">⚡ Активные <span class="count" id="activeCount">0</span></button>
+      <button data-filter="important">⭐ Важные <span class="count" id="importantCount">0</span></button>
+      <button data-filter="done">🏆 Выполненные <span class="count" id="doneCount">0</span></button>
+    </nav>
+    <div class="sidebar-bottom">Каждый маленький шаг — это XP.<br>Продолжай прокачиваться ✨</div>
+  </aside>
+  <main class="main">
+    <header class="top">
+      <div>
+        <h1>Твой следующий уровень 🚀</h1>
+        <p>Выполняй задания и собирай опыт.</p>
+        <div class="xp-wrap"><div class="xp-label"><span id="levelLabel">Уровень 1</span><span id="xpLabel">0 / 100 XP</span></div><div class="bar"><span id="xpBar"></span></div></div>
+      </div>
+      <div class="level-pill">✨ <span id="totalXp">0</span> XP всего</div>
+    </header>
+    <form class="composer" id="taskForm">
+      <input id="taskInput" maxlength="100" placeholder="Например: прочитать 10 страниц..." autocomplete="off" required>
+      <button class="primary" type="submit">+ Добавить задание</button>
+    </form>
+    <div class="toolbar">
+      <button class="filter active" data-filter="all">Все</button>
+      <button class="filter" data-filter="active">В процессе</button>
+      <button class="filter" data-filter="important">Важные ⭐</button>
+      <button class="filter" data-filter="done">Готово</button>
+    </div>
+    <section class="task-list" id="taskList"></section>
+    <div class="bottom-grid">
+      <section class="panel mini"><h3>🏆 Выполнено</h3><strong id="doneStat">0</strong><p>заданий завершено</p></section>
+      <section class="panel mini"><h3>🔥 Твой прогресс</h3><strong id="percentStat">0%</strong><p>от всех заданий</p></section>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const STORAGE_KEY = "levelup-tasks-v1";
+const starterTasks = [
+  {id:1,title:"Сделать домашнее задание",done:false,important:true},
+  {id:2,title:"Прочитать 10 страниц книги",done:false,important:false},
+  {id:3,title:"Сделать небольшую зарядку",done:true,important:false},
+  {id:4,title:"Узнать что-то новое",done:false,important:false}
+];
+let state = loadState();
+let currentFilter = "all";
+let nextId = Math.max(0,...state.tasks.map(t=>t.id))+1;
+function loadState(){
+  try { const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)); if(saved && Array.isArray(saved.tasks)) return {tasks:saved.tasks,xp:Number(saved.xp)||0}; } catch(e){}
+  return {tasks:starterTasks,xp:20};
+}
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function showToast(message){const el=document.getElementById("toast");el.textContent=message;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1800);}
+function visibleTasks(){
+  return state.tasks.filter(t=>currentFilter==="all" || (currentFilter==="active"&&!t.done) || (currentFilter==="done"&&t.done) || (currentFilter==="important"&&t.important));
+}
+function render(){
+  const tasks=visibleTasks(), done=state.tasks.filter(t=>t.done).length;
+  document.getElementById("allCount").textContent=state.tasks.length;
+  document.getElementById("activeCount").textContent=state.tasks.filter(t=>!t.done).length;
+  document.getElementById("importantCount").textContent=state.tasks.filter(t=>t.important).length;
+  document.getElementById("doneCount").textContent=done;
+  const level=Math.floor(state.xp/100)+1, progress=state.xp%100;
+  document.getElementById("levelLabel").textContent="Уровень "+level;
+  document.getElementById("xpLabel").textContent=progress+" / 100 XP";
+  document.getElementById("xpBar").style.width=progress+"%";
+  document.getElementById("totalXp").textContent=state.xp;
+  document.getElementById("doneStat").textContent=done;
+  document.getElementById("percentStat").textContent=(state.tasks.length?Math.round(done/state.tasks.length*100):0)+"%";
+  document.querySelectorAll("[data-filter]").forEach(b=>b.classList.toggle("active",b.dataset.filter===currentFilter));
+  const list=document.getElementById("taskList");
+  if(!tasks.length){list.innerHTML='<div class="empty">Здесь пока пусто 🌱<br><small>Добавь задание или выбери другой фильтр.</small></div>';return;}
+  list.innerHTML=tasks.map(t=>`<article class="task-card ${t.done?"done":""}">
+    <button class="check" aria-label="${t.done?"Отметить невыполненным":"Выполнить"}" data-action="toggle" data-id="${t.id}">${t.done?"✓":""}</button>
+    <div class="task-body"><div class="task-title">${escapeHtml(t.title)}</div><div class="task-meta"><span class="tag">${t.done?"🏁 Выполнено":"🎯 +20 XP"}</span><span>${t.done?"Отличная работа!":"Шаг за шагом"}</span></div></div>
+    <button class="star ${t.important?"important":""}" title="Важное" aria-label="Переключить важность" data-action="star" data-id="${t.id}">${t.important?"★":"☆"}</button>
+    <button class="delete" title="Удалить" aria-label="Удалить задание" data-action="delete" data-id="${t.id}">×</button>
+  </article>`).join("");
+}
+document.getElementById("taskForm").addEventListener("submit",e=>{
+  e.preventDefault();const input=document.getElementById("taskInput"),title=input.value.trim();if(!title)return;
+  state.tasks.unshift({id:nextId++,title,done:false,important:false});input.value="";currentFilter="all";saveState();render();showToast("Задание добавлено ✨");
+});
+document.addEventListener("click",e=>{
+  const filter=e.target.closest("[data-filter]");
+  if(filter){currentFilter=filter.dataset.filter;render();return;}
+  const action=e.target.closest("[data-action]");if(!action)return;
+  const task=state.tasks.find(t=>t.id===Number(action.dataset.id));if(!task)return;
+  if(action.dataset.action==="toggle"){
+    task.done=!task.done;
+    if(task.done){state.xp+=20;showToast("+20 XP! Так держать 🚀");}
+    else {state.xp=Math.max(0,state.xp-20);showToast("Задание снова активно");}
+  }else if(action.dataset.action==="star"){task.important=!task.important;}
+  else if(action.dataset.action==="delete"){state.tasks=state.tasks.filter(t=>t.id!==task.id);showToast("Задание удалено");}
+  saveState();render();
+});
+render();
+</script>
+</body>
+</html>
